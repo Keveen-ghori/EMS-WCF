@@ -48,6 +48,26 @@ namespace EMS.Infrastructure.Services.EmployeeServices
             return empLists;
         }
 
+        public async Task<EmployeeSummaryDto> GetEMployeeById(long EmployeeId)
+        {
+            var emp = await this.employeeRepository.GetEmpById(x => x.EmployeeId == EmployeeId && x.DeletedAt == null);
+            var empMapped = this.mapper.Map<EmployeeSummaryDto>(emp);
+            return empMapped;
+        }
+
+        public async Task<bool> DeleteEmp(long EmployeeId)
+        {
+            var status = await this.employeeRepository.DeleteEmpByid(x => x.EmployeeId == EmployeeId && x.DeletedAt == null);
+            return status;
+        }
+
+        public async Task<bool> CreateEmp(CreateEmployeeDto model)
+        {
+            var modelMapped = this.mapper.Map<Employee>(model);
+            var status = await this.employeeRepository.CreateNewEmp(modelMapped);
+            return status;
+        }
+
         #endregion
     }
 }

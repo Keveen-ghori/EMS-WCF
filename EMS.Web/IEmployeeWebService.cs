@@ -17,5 +17,13 @@ namespace EMS.Web
 
         [OperationContract]
         Task<ApiResponse<IEnumerable<EmployeeSummaryDto>>> GetEmployees();
+
+        [OperationContract]
+        Task<ApiResponse<EmployeeSummaryDto>> GetEmployeeByIdWebService(long EMployeeId);
+
+        [OperationContract]
+        Task<ApiResponse<bool>> DeleteEmployeeByidWebService(long EmployeeId);
+        [OperationContract]
+        Task<ApiResponse<bool>> CreateEmployeeWebService(CreateEmployeeDto model);
     }
 }

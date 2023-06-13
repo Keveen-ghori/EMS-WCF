@@ -11,15 +11,6 @@ namespace EMS.Infrastructure.Settings
 {
     public class EmployeeManagementContext : DbContext
     {
-        //public EmployeeManagementContext()
-        //{
-        //}
-
-        //public EmployeeManagementContext(DbContextOptions<EmployeeManagementContext> options)
-        //    : base(options)
-        //{
-        //}
-
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
       => optionsBuilder.UseSqlServer("server=PCI101\\SQL2019;Database=EmployeeManagement;User Id=sa;Password=Tatva@123;Trusted_connection=SSPI;Encrypt=false;TrustServerCertificate=True");
 

@@ -14,6 +14,7 @@ namespace EMS.Application.Mapper
         public MappingProfile()
         {
             CreateMap<Employee, EmployeeSummaryDto>();
+            CreateMap<Employee, CreateEmployeeDto>().ReverseMap();
         }
     }
 }

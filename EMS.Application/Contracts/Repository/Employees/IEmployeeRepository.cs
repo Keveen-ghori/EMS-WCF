@@ -1,4 +1,5 @@
-﻿using EMS.Data.Models;
+﻿using EMS.Application.DTO.Employee;
+using EMS.Data.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,5 +13,7 @@ namespace EMS.Application.Contracts.Repository.Employees
     {
         Task<IEnumerable<Employee>> GetAllEmp(Expression<Func<Employee, bool>> expression);
         Task<Employee> GetEmpById(Expression<Func<Employee, bool>> expression);
+        Task<bool> DeleteEmpByid(Expression<Func<Employee, bool>> expression);
+        Task<bool> CreateNewEmp(Employee model);
     }
 }

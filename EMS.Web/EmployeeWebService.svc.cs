@@ -52,7 +52,6 @@ namespace EMS.Web
 
         #region Method
 
-
         public async Task<ApiResponse<IEnumerable<EmployeeSummaryDto>>> GetEmployees()
         {
             try
@@ -61,7 +60,7 @@ namespace EMS.Web
                 EmployeeService employeeService = new EmployeeService(this.employeeRepository);
 
                 IEnumerable<Employee> employees = await employeeService.GetAllEmployees();
-                var empMapped = this.mapper.Map<IEnumerable<EmployeeSummaryDto>>(employees);   
+                var empMapped = this.mapper.Map<IEnumerable<EmployeeSummaryDto>>(employees);
                 apiResponse.Content = empMapped;
                 apiResponse.Success = true;
                 apiResponse.StatusCode = HttpStatusCode.OK;
@@ -86,6 +85,105 @@ namespace EMS.Web
             }
 
         }
+
+        public async Task<ApiResponse<EmployeeSummaryDto>> GetEmployeeByIdWebService(long EmployeeId)
+        {
+            try
+            {
+                ApiResponse<EmployeeSummaryDto> apiResponse = new ApiResponse<EmployeeSummaryDto>();
+                EmployeeService employeeService = new EmployeeService(this.employeeRepository);
+
+                EmployeeSummaryDto employees = await employeeService.GetEMployeeById(EmployeeId);
+                apiResponse.Content = employees;
+                apiResponse.Success = true;
+                apiResponse.StatusCode = HttpStatusCode.OK;
+
+                return apiResponse;
+            }
+
+            catch (Exception ex)
+            {
+                ApiResponse<EmployeeSummaryDto> apiResponse = new ApiResponse<EmployeeSummaryDto>();
+                apiResponse.Success = false;
+                apiResponse.StatusCode = HttpStatusCode.InternalServerError;
+                apiResponse.Messages = new List<ApiMessage>
+                            {
+                                new ApiMessage
+                                {
+                                    MessageType = ApiMessage.MessageTypes.EXCEPTION,
+                                    Message = ex.Message
+                                }
+                            };
+
+                return apiResponse;
+            }
+        }
+
+        public async Task<ApiResponse<bool>> DeleteEmployeeByidWebService(long EmployeeId)
+        {
+            try
+            {
+                ApiResponse<bool> apiResponse = new ApiResponse<bool>();
+                EmployeeService employeeService = new EmployeeService(this.employeeRepository);
+
+                bool employees = await employeeService.DeleteEmp(EmployeeId);
+                apiResponse.Content = employees;
+                apiResponse.Success = true;
+                apiResponse.StatusCode = HttpStatusCode.OK;
+
+                return apiResponse;
+            }
+            catch (Exception ex)
+            {
+                ApiResponse<bool> apiResponse = new ApiResponse<bool>();
+                apiResponse.Success = false;
+                apiResponse.StatusCode = HttpStatusCode.InternalServerError;
+                apiResponse.Messages = new List<ApiMessage>
+                            {
+                                new ApiMessage
+                                {
+                                    MessageType = ApiMessage.MessageTypes.EXCEPTION,
+                                    Message = ex.Message
+                                }
+                            };
+
+                return apiResponse;
+            }
+        }
+
+        public async Task<ApiResponse<bool>> CreateEmployeeWebService(CreateEmployeeDto model)
+        {
+            try
+            {
+                ApiResponse<bool> apiResponse = new ApiResponse<bool>();
+                EmployeeService employeeService = new EmployeeService(this.employeeRepository);
+
+                bool employees = await employeeService.CreateEmp(model);
+                apiResponse.Content = employees;
+                apiResponse.Success = true;
+                apiResponse.StatusCode = HttpStatusCode.OK;
+
+                return apiResponse;
+            }
+            catch (Exception ex)
+            {
+                ApiResponse<bool> apiResponse = new ApiResponse<bool>();
+                apiResponse.Success = false;
+                apiResponse.StatusCode = HttpStatusCode.InternalServerError;
+                apiResponse.Messages = new List<ApiMessage>
+                            {
+                                new ApiMessage
+                                {
+                                    MessageType = ApiMessage.MessageTypes.EXCEPTION,
+                                    Message = ex.Message
+                                }
+                            };
+
+                return apiResponse;
+            }
+        }
+
+
 
         #endregion
     }
