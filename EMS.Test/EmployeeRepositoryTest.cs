@@ -17,54 +17,52 @@ namespace EMS.Test
     [TestClass]
     public class EmployeeRepositoryTest
     {
-        [TestMethod]
-        public async Task GetEmpLists()
+        private EmployeeManagementContext context;
+        private EmployeeRepository employeeRepository;
+        private IMapper mapper;
+
+        [TestInitialize]
+        public void Initialize()
         {
-            long EmployeeId = 53;
-            using (EmployeeManagementContext context = new EmployeeManagementContext())
+            context = new EmployeeManagementContext();
+            employeeRepository = new EmployeeRepository(context);
+
+            MapperConfiguration configuration = new MapperConfiguration(cfg =>
             {
-                EmployeeRepository employeeRepository = new EmployeeRepository(context);
-                MapperConfiguration configuration = new MapperConfiguration(cfg =>
-                {
-                    cfg.AddProfile<MappingProfile>();
-                });
-
-                IMapper mapper = configuration.CreateMapper();
-
-                var emp = await employeeRepository.GetAllEmp(x => x.DeletedAt == null);
-                var empSummaryDtos = mapper.Map<IEnumerable<Employee>, IEnumerable<EmployeeSummaryDto>>(emp);
-                Assert.IsNotNull(empSummaryDtos);
-                Assert.IsTrue(empSummaryDtos.Any());
-
-                var empbyId = await employeeRepository.GetEmpById(x => x.EmployeeId == EmployeeId && x.DeletedAt == null);
-                var empSummaryDtosId = mapper.Map<Employee, EmployeeSummaryDto>(empbyId);
-                Assert.IsNotNull(empSummaryDtosId);
-                Assert.IsTrue(empSummaryDtosId.EmployeeId != 0);
-
-            }
+                cfg.AddProfile<MappingProfile>();
+            });
+            mapper = configuration.CreateMapper();
         }
 
-        //[TestMethod]
-        //public async Task<EmployeeSummaryDto> GetEmpById()
-        //{
-        //    long EmployeeId = 1;
-        //    using (EmployeeManagementContext context = new EmployeeManagementContext())
-        //    {
-        //        EmployeeRepository employeeRepository = new EmployeeRepository(context);
-        //        MapperConfiguration configuration = new MapperConfiguration(cfg =>
-        //        {
-        //            cfg.AddProfile<MappingProfile>();
-        //        });
+        [TestMethod]
+        public async Task TestGetAllEmp()
+        {
+            var emp = await employeeRepository.GetAllEmp(x => x.DeletedAt == null);
+            var empSummaryDtos = mapper.Map<IEnumerable<Employee>, IEnumerable<EmployeeSummaryDto>>(emp);
 
-        //        IMapper mapper = configuration.CreateMapper();
+            // Assert
+            Assert.IsNotNull(empSummaryDtos);
+            Assert.IsTrue(empSummaryDtos.Any());
+        }
 
-        //        var emp = await employeeRepository.GetEmpById(x => x.EmployeeId == EmployeeId && x.DeletedAt == null);
-        //        var empSummaryDtos = mapper.Map<Employee, EmployeeSummaryDto>(emp);
-        //        Assert.IsNotNull(empSummaryDtos);
-        //        Assert.IsTrue(empSummaryDtos.EmployeeId != 0);
-        //        return empSummaryDtos;
+        [TestMethod]
+        public async Task TestGetEmpById()
+        {
+            long employeeId = 53;
 
-        //    }
-        //}
+            var emp = await employeeRepository.GetEmpById(x => x.EmployeeId == employeeId && x.DeletedAt == null);
+            var empSummaryDto = mapper.Map<Employee, EmployeeSummaryDto>(emp);
+
+            // Assert
+            Assert.IsNotNull(empSummaryDto);
+            Assert.IsTrue(empSummaryDto.EmployeeId != 0);
+        }
+
+
+        [TestCleanup]
+        public void Cleanup()
+        {
+            context.Dispose();
+        }
     }
 }
