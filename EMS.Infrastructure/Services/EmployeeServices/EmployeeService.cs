@@ -53,6 +53,11 @@ namespace EMS.Infrastructure.Services.EmployeeServices
         {
             var Id = Convert.ToInt64(EmployeeId);
             var emp = await this.employeeRepository.GetEmpById(x => x.EmployeeId == Id && x.DeletedAt == null);
+
+            if(emp == null)
+            {
+                throw new InvalidOperationException("Employee does't found.");
+            }
             var empMapped = this.mapper.Map<EmployeeSummaryDto>(emp);
             return empMapped;
         }

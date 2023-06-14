@@ -24,7 +24,6 @@ namespace EMS.Infrastructure.Repository
 
         public async Task CreateNewEmp(Employee model)
         {
-            //var IsEmailExists = await this.context.Employees.FirstOrDefaultAsync(x => x.Email == model.Email);
 
 
             Employee emp = new Employee();
@@ -75,7 +74,7 @@ namespace EMS.Infrastructure.Repository
         public async Task<bool> isEmailExists(string Email)
         {
             var IsEmailExists = await this.context.Employees.FirstOrDefaultAsync(x => x.Email == Email && x.DeletedAt == null);
-            if(IsEmailExists == null)
+            if (IsEmailExists == null)
             {
                 return false;
             }

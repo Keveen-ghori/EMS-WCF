@@ -16,6 +16,7 @@ using System.ServiceModel;
 using System.ServiceModel.Web;
 using System.Text;
 using System.Threading.Tasks;
+using System.Web.Script.Serialization;
 
 namespace EMS.Web
 {
@@ -184,14 +185,16 @@ namespace EMS.Web
             }
         }
 
-        public async Task<ApiResponse<bool>> UpdateEMployeeWebService(UpdateEmployeeDto model, long Employeeid)
+        public async Task<ApiResponse<bool>> UpdateEMployeeWebService(UpdateEmployeeDto model, string Employeeid)
         {
             try
             {
                 ApiResponse<bool> apiResponse = new ApiResponse<bool>();
                 EmployeeService employeeService = new EmployeeService(this.employeeRepository);
 
-                bool employees = await employeeService.UpdateEmp(model, Employeeid);
+
+                var Id = Convert.ToInt64(Employeeid);
+                bool employees = await employeeService.UpdateEmp(model, Id);
                 apiResponse.Content = employees;
                 apiResponse.Success = true;
                 apiResponse.StatusCode = HttpStatusCode.OK;
@@ -215,7 +218,6 @@ namespace EMS.Web
                 return apiResponse;
             }
         }
-
 
 
         #endregion

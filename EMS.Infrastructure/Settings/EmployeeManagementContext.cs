@@ -12,7 +12,7 @@ namespace EMS.Infrastructure.Settings
     public class EmployeeManagementContext : DbContext
     {
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-      => optionsBuilder.UseSqlServer("server=PCI101\\SQL2019;Database=EmployeeManagement;User Id=sa;Password=Tatva@123;Trusted_connection=SSPI;Encrypt=false;TrustServerCertificate=True");
+      => optionsBuilder.UseSqlServer(ConfigurationManager.ConnectionStrings["DefaultConnection"].ToString());
 
         public virtual DbSet<Employee> Employees { get; set; }
         public virtual DbSet<Admin> Admins { get; set; }

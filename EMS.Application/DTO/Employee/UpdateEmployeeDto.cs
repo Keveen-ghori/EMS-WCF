@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Runtime.Serialization;
 using System.Text;
@@ -11,19 +12,20 @@ namespace EMS.Application.DTO.Employee
     public class UpdateEmployeeDto : IExtensibleDataObject
     {
         [DataMember]
-        public string FirstName { get; set; } = string.Empty;
+        public string firstName { get; set; } = string.Empty;
         [DataMember]
-        public string LastName { get; set; }
+        public string lastName { get; set; }
         [DataMember]
-        public DateTime? DOB { get; set; }
+        [DataType(DataType.Date)]
+        public DateTime dOB { get; set; }
         [DataMember]
-        public byte Gender { get; set; } = 1;
+        public byte gender { get; set; } = 1;
         [DataMember]
-        public bool Status { get; set; }
+        public bool status { get; set; }
         [DataMember]
-        public bool IsLocked { get; set; }
+        public bool isLocked { get; set; }
         [DataMember]
-        public DateTime? Updated_At { get; set; } = DateTime.Now;
+        public DateTime? updated_At { get; set; } = DateTime.Now;
         public ExtensionDataObject ExtensionData { get; set; }
     }
 }
