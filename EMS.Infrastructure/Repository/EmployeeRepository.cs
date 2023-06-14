@@ -47,7 +47,7 @@ namespace EMS.Infrastructure.Repository
             emp.UserName = model.FirstName + " " + model.LastName;
             emp.Gender = model.Gender;
             await this.context.Employees.AddRangeAsync(emp);
-            this.context.SaveChanges();
+            await this.context.SaveChangesAsync();
             return true;
 
         }
@@ -55,14 +55,14 @@ namespace EMS.Infrastructure.Repository
         public async Task<bool> DeleteEmpByid(Expression<Func<Employee, bool>> expression)
         {
             var isEmpExists = await this.context.Employees.FirstOrDefaultAsync(expression);
-            if(isEmpExists == null)
+            if (isEmpExists == null)
             {
-                return false;   
+                return false;
             }
             else
             {
                 isEmpExists.DeletedAt = DateTime.Now;
-                this.context.SaveChangesAsync();
+                await this.context.SaveChangesAsync();
                 return true;
             }
         }

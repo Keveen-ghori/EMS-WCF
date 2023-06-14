@@ -86,7 +86,7 @@ namespace EMS.Web
 
         }
 
-        public async Task<ApiResponse<EmployeeSummaryDto>> GetEmployeeByIdWebService(long EmployeeId)
+        public async Task<ApiResponse<EmployeeSummaryDto>> GetEmployeeByIdWebService(string EmployeeId)
         {
             try
             {

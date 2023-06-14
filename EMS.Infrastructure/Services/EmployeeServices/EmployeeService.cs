@@ -48,9 +48,10 @@ namespace EMS.Infrastructure.Services.EmployeeServices
             return empLists;
         }
 
-        public async Task<EmployeeSummaryDto> GetEMployeeById(long EmployeeId)
+        public async Task<EmployeeSummaryDto> GetEMployeeById(string EmployeeId)
         {
-            var emp = await this.employeeRepository.GetEmpById(x => x.EmployeeId == EmployeeId && x.DeletedAt == null);
+            var Id = Convert.ToInt64(EmployeeId);
+            var emp = await this.employeeRepository.GetEmpById(x => x.EmployeeId == Id && x.DeletedAt == null);
             var empMapped = this.mapper.Map<EmployeeSummaryDto>(emp);
             return empMapped;
         }
