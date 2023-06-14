@@ -5,6 +5,7 @@ using EMS.Application.Mapper;
 using EMS.Data.Models;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Text;
@@ -56,19 +57,42 @@ namespace EMS.Infrastructure.Services.EmployeeServices
             return empMapped;
         }
 
-        public async Task<bool> DeleteEmp(long EmployeeId)
+        public async Task<bool> DeleteEmp(string EmployeeId)
         {
-            var status = await this.employeeRepository.DeleteEmpByid(x => x.EmployeeId == EmployeeId && x.DeletedAt == null);
+            var Id = Convert.ToInt64(EmployeeId);
+            var status = await this.employeeRepository.DeleteEmpByid(x => x.EmployeeId == Id && x.DeletedAt == null);
             return status;
         }
 
         public async Task<bool> CreateEmp(CreateEmployeeDto model)
         {
+            var isEmailExists = await this.employeeRepository.isEmailExists(model.Email);
+
+            if(isEmailExists)
+            {
+                throw new InvalidOperationException("Email already exists. try with different account");
+            }
             var modelMapped = this.mapper.Map<Employee>(model);
-            var status = await this.employeeRepository.CreateNewEmp(modelMapped);
-            return status;
+            await this.employeeRepository.CreateNewEmp(modelMapped);
+            return true;
         }
 
+        public async Task<bool> UpdateEmp(UpdateEmployeeDto model, long Employeeid)
+        {
+            var isEmpExists = await this.employeeRepository.GetEmpById(x => x.EmployeeId == Employeeid && x.DeletedAt == null);
+
+            if (isEmpExists == null)
+            {
+                throw new InvalidOperationException("Employee not found.");
+            }
+            else
+            {
+                var modelMapped = this.mapper.Map<Employee>(model);
+                await this.employeeRepository.UpdateEmp(modelMapped);
+
+                return true;
+            }
+        }
         #endregion
     }
 }

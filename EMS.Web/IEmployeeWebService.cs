@@ -14,17 +14,20 @@ namespace EMS.Web
     [ServiceContract]
     public interface IEmployeeWebService
     {
-        [WebGet(UriTemplate = "Employees")]
+        //[WebGet(UriTemplate = "Employees")]
         [OperationContract]
         Task<ApiResponse<IEnumerable<EmployeeSummaryDto>>> GetEmployees();
 
         [OperationContract]
-        [WebInvoke(Method = "GET", UriTemplate = "Employee/{EmployeeId}")]
+        //[WebInvoke(Method = "GET", UriTemplate = "Employee/{EmployeeId}")]
         Task<ApiResponse<EmployeeSummaryDto>> GetEmployeeByIdWebService(string EmployeeId);
 
         [OperationContract]
-        Task<ApiResponse<bool>> DeleteEmployeeByidWebService(long EmployeeId);
+        //[WebInvoke(Method = "Delete", UriTemplate = "EmployeeDelete/{EmployeeId}")]
+        Task<ApiResponse<bool>> DeleteEmployeeByidWebService(string EmployeeId);
         [OperationContract]
         Task<ApiResponse<bool>> CreateEmployeeWebService(CreateEmployeeDto model);
+        [OperationContract]
+        Task<ApiResponse<bool>> UpdateEMployeeWebService(UpdateEmployeeDto model, long Employeeid);
     }
 }

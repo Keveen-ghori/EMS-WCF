@@ -22,14 +22,10 @@ namespace EMS.Infrastructure.Repository
             this.context = context;
         }
 
-        public async Task<bool> CreateNewEmp(Employee model)
+        public async Task CreateNewEmp(Employee model)
         {
-            var IsEmailExists = await this.context.Employees.FirstOrDefaultAsync(x => x.Email == model.Email);
+            //var IsEmailExists = await this.context.Employees.FirstOrDefaultAsync(x => x.Email == model.Email);
 
-            if (IsEmailExists != null)
-            {
-                return false;
-            }
 
             Employee emp = new Employee();
             emp.FirstName = model.FirstName;
@@ -48,7 +44,6 @@ namespace EMS.Infrastructure.Repository
             emp.Gender = model.Gender;
             await this.context.Employees.AddRangeAsync(emp);
             await this.context.SaveChangesAsync();
-            return true;
 
         }
 
@@ -76,5 +71,36 @@ namespace EMS.Infrastructure.Repository
         {
             return await this.context.Set<Employee>().FirstOrDefaultAsync(expression);
         }
+
+        public async Task<bool> isEmailExists(string Email)
+        {
+            var IsEmailExists = await this.context.Employees.FirstOrDefaultAsync(x => x.Email == Email && x.DeletedAt == null);
+            if(IsEmailExists == null)
+            {
+                return false;
+            }
+            else
+            {
+                return true;
+            }
+        }
+
+        public async Task UpdateEmp(Employee model)
+        {
+            this.context.Entry(model).State = EntityState.Modified;
+            model.UserName = model.FirstName + " " + model.LastName;
+            model.UpdatedAt = DateTime.Now;
+            if ((bool)!model.IsLocked)
+            {
+                model.Attemps = 0;
+            }
+            else
+            {
+                model.Attemps = model.TotalAttemps;
+            }
+            await this.context.SaveChangesAsync();
+        }
+
+
     }
 }

@@ -8,6 +8,7 @@ using EMS.Infrastructure.Services.EmployeeServices;
 using EMS.Infrastructure.Settings;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Net;
 using System.Runtime.Serialization;
@@ -119,7 +120,7 @@ namespace EMS.Web
             }
         }
 
-        public async Task<ApiResponse<bool>> DeleteEmployeeByidWebService(long EmployeeId)
+        public async Task<ApiResponse<bool>> DeleteEmployeeByidWebService(string EmployeeId)
         {
             try
             {
@@ -159,6 +160,38 @@ namespace EMS.Web
                 EmployeeService employeeService = new EmployeeService(this.employeeRepository);
 
                 bool employees = await employeeService.CreateEmp(model);
+                apiResponse.Content = employees;
+                apiResponse.Success = true;
+                apiResponse.StatusCode = HttpStatusCode.OK;
+
+                return apiResponse;
+            }
+            catch (Exception ex)
+            {
+                ApiResponse<bool> apiResponse = new ApiResponse<bool>();
+                apiResponse.Success = false;
+                apiResponse.StatusCode = HttpStatusCode.InternalServerError;
+                apiResponse.Messages = new List<ApiMessage>
+                            {
+                                new ApiMessage
+                                {
+                                    MessageType = ApiMessage.MessageTypes.EXCEPTION,
+                                    Message = ex.Message
+                                }
+                            };
+
+                return apiResponse;
+            }
+        }
+
+        public async Task<ApiResponse<bool>> UpdateEMployeeWebService(UpdateEmployeeDto model, long Employeeid)
+        {
+            try
+            {
+                ApiResponse<bool> apiResponse = new ApiResponse<bool>();
+                EmployeeService employeeService = new EmployeeService(this.employeeRepository);
+
+                bool employees = await employeeService.UpdateEmp(model, Employeeid);
                 apiResponse.Content = employees;
                 apiResponse.Success = true;
                 apiResponse.StatusCode = HttpStatusCode.OK;
