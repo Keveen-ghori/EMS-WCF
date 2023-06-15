@@ -86,20 +86,32 @@ namespace EMS.Infrastructure.Repository
 
         public async Task UpdateEmp(Employee model)
         {
-            this.context.Entry(model).State = EntityState.Modified;
-            model.UserName = model.FirstName + " " + model.LastName;
-            model.UpdatedAt = DateTime.Now;
-            if ((bool)!model.IsLocked)
+            try
             {
-                model.Attemps = 0;
+                model.UserName = model.FirstName + " " + model.LastName;
+                model.UpdatedAt = DateTime.Now;
+                if ((bool)!model.IsLocked)
+                {
+                    model.Attemps = 0;
+                }
+                else
+                {
+                    model.Attemps = model.TotalAttemps;
+                }
+                this.context.Employees.Update(model);
+                await this.context.SaveChangesAsync();
             }
-            else
+            catch (DbUpdateConcurrencyException ex)
             {
-                model.Attemps = model.TotalAttemps;
+                foreach (var entry in ex.Entries)
+                {
+                    await entry.ReloadAsync();
+                }
+
+                await this.context.SaveChangesAsync();
             }
-            await this.context.SaveChangesAsync();
+
+
         }
-
-
     }
 }

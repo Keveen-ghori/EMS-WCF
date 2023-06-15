@@ -28,7 +28,8 @@ namespace EMS.Web
         Task<ApiResponse<EmployeeSummaryDto>> GetEmployeeByIdWebService(string EmployeeId);
 
         [OperationContract]
-        [WebInvoke(Method = "DELETE", UriTemplate = "EmployeeDelete/{EmployeeId}")]
+        [WebInvoke(Method = "DELETE", UriTemplate = "EmployeeDelete/{EmployeeId}",
+                    ResponseFormat = WebMessageFormat.Json)]
         Task<ApiResponse<bool>> DeleteEmployeeByidWebService(string EmployeeId);
 
         /// <summary>

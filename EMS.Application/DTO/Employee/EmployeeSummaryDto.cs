@@ -12,6 +12,10 @@ namespace EMS.Application.DTO.Employee
     public class EmployeeSummaryDto : IExtensibleDataObject
     {
         [DataMember]
+        public string FirstName { get; set; } = string.Empty;
+        [DataMember]
+        public string Lastname { get; set; } = string.Empty;
+        [DataMember]
         public long EmployeeId { get; set; }
         [DataMember]
         public string UserName { get; set; } = string.Empty;
@@ -28,6 +32,8 @@ namespace EMS.Application.DTO.Employee
         public bool Status { get; set; }
         [DataMember]
         public bool IsLocked { get; set; }
+        [DataMember]
+        public DateTime? Password_Updated_At { get; set; }
 
         #region IExtensibleDataObject Members
 

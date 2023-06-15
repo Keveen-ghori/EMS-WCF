@@ -20,7 +20,7 @@ using System.Web.Script.Serialization;
 
 namespace EMS.Web
 {
-    [ServiceBehavior]
+    [ServiceBehavior(IncludeExceptionDetailInFaults = true)]
     public class EmployeeWebService : IEmployeeWebService
     {
         #region Fields

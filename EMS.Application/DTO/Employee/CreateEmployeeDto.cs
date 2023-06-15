@@ -27,7 +27,7 @@ namespace EMS.Application.DTO.Employee
         [DataMember]
         [DataType(DataType.Date)]
         [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:yyyy-MM-dd}")]
-        public DateTime DOB { get; set; }
+        public string DOB { get; set; }
 
         /// <summary>
         /// Default value from num class
